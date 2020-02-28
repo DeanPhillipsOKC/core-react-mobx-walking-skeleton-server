@@ -16,6 +16,7 @@ namespace Application
         {
             private DataContext _context;
 
+            // DataContext is temporary.  We don't want the application knowing about the persistence layer
             public Handler(DataContext context)
             {
                 _context = context;
