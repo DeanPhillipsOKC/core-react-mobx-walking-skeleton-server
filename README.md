@@ -33,6 +33,68 @@ to install them using the `dotnet tool install --global dotnet-ef` command.
 | Prettier - Code formatter | Esben Petersen |
 | SQLite | alexcvzz |
 
+## VS Code Snippets
+
+1. You can go to File -> Preferences -> User Snippets -> New Snippet File For \<Solution\> to create
+a new snippets file for the project in your .vscode folder.
+2. Open the new file and replace the comments with the following
+```
+"Query Handler": {
+		"prefix": "qhandler",
+		"body": [
+		  "public class Query : IRequest<${1:ReturnObject}> {}",
+		  "",
+		  "        public class Handler : IRequestHandler<Query, ${1:ReturnObject}>",
+		  "        {",
+		  "            private DataContext _context;",
+		  "",
+		  "            // DataContext is temporary.  We don't want the application knowing about the persistence layer",
+		  "            public Handler(DataContext context)",
+		  "            {",
+		  "                _context = context;",
+		  "            }",
+		  "",
+		  "            public async Task<${1:ReturnObject}> Handle(Query request, CancellationToken cancellationToken)",
+		  "            {",
+		  "                // Handler logic",
+		  "            }",
+		  "        }"
+		],
+		"description": "Query Handler"
+	  },
+	  "Command Handler": {
+		"prefix": "chandler",
+		"body": [
+		  "public class Command : IRequest",
+		  "        {",
+		  "            // TODO: Add command properties here",
+		  "        }",
+		  "",
+		  "        public class Handler : IRequestHandler<Command>",
+		  "        {",
+		  "            private DataContext _context;",
+		  "",
+		  "            public Handler(DataContext context)",
+		  "            {",
+		  "                _context = context;",
+		  "            }",
+		  "",
+		  "            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)",
+		  "            {",
+		  "                // TODO: handle your change here before it gets saved below",
+		  "",
+		  "                if (await _context.SaveChangesAsync() > 0)",
+		  "                    return Unit.Value;",
+		  "                ",
+		  "                throw new Exception(\"Problem saving changes\");",
+		  "",
+		  "            }",
+		  "        }"
+		],
+		"description": "Command Handler"
+	  }
+```
+
 ## Credit
 
 This project was started while working through the Udemy course "Complete Guide to Building an App with .Net Core and React" by Neil Cummings
