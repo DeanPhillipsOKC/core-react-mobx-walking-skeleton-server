@@ -11,13 +11,13 @@ namespace Application.Activities
     {
         public class Command : IRequest
         {
-            public Guid Id { get; set;}
+            public Guid Id { get; set; }
             public string Title { get; set; }
-            public string Description { get; set;}
-            public string Category { get; set;}
-            public DateTime Date { get; set;}
-            public string City { get; set;}
-            public string Venue { get; set;}
+            public string Description { get; set; }
+            public string Category { get; set; }
+            public DateTime Date { get; set; }
+            public string City { get; set; }
+            public string Venue { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -31,7 +31,8 @@ namespace Application.Activities
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var newActivity = new Activity {
+                var newActivity = new Activity
+                {
                     Id = request.Id,
                     Title = request.Title,
                     Description = request.Description,
@@ -45,7 +46,7 @@ namespace Application.Activities
 
                 if (await _context.SaveChangesAsync() > 0)
                     return Unit.Value;
-                
+
                 throw new Exception("Problem saving new Activity");
 
             }
