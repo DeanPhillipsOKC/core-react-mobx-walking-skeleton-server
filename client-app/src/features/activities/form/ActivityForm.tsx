@@ -1,7 +1,11 @@
 import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 
-export const ActivityForm = () => {
+interface IProps {
+    closeForm: () => void;
+}
+
+export const ActivityForm: React.FC<IProps> = ({closeForm}) => {
   return (
     <Segment clearing>
       <Form>
@@ -17,7 +21,7 @@ export const ActivityForm = () => {
           type="submit"
           content="Submit"
         ></Button>
-        <Button floated="right" type="button" content="Cancel"></Button>
+        <Button onClick={closeForm} floated="right" type="button" content="Cancel"></Button>
       </Form>
     </Segment>
   );

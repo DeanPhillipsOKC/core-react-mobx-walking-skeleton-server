@@ -21,6 +21,10 @@ const App = () => {
     setEditMode(true);
   }
 
+  const handleCloseForm = () => {
+    setEditMode(false);
+  }
+
   useEffect(() => {
     axios
       .get<IActivity[]>("http://localhost:5000/api/activities")
@@ -39,6 +43,7 @@ const App = () => {
           selectedActivity={selectedActivity}
           editMode={editMode}
           setEditMode={setEditMode}
+          closeForm={handleCloseForm}
         ></ActivityDashboard>
       </Container>
     </Fragment>
