@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, List } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { IActivity } from "../../../app/layout/models/activity";
 import { ActivityList } from "./ActivityList";
 import { ActivityDetails } from "../details/ActivityDetails";
@@ -40,7 +40,7 @@ export const ActivityDashboard: React.FC<IProps> = ({
             closeDetails={closeDetails}
           ></ActivityDetails>
         )}
-        {editMode && <ActivityForm closeForm={closeForm}></ActivityForm>}
+        {editMode && <ActivityForm closeForm={closeForm} activity={selectedActivity!}></ActivityForm>}
       </Grid.Column>
     </Grid>
   );

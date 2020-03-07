@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment, Component } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import { Header, Icon, List, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { IActivity } from "./models/activity";
 import { NavBar } from "../../features/nav/NavBar";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
@@ -13,7 +13,7 @@ const App = () => {
   const [editMode, setEditMode] = useState(false);
 
   const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.find(a => a.id == id) ?? null);
+    setSelectedActivity(activities.find(a => a.id === id) ?? null);
   };
 
   const handleOpenCreateForm = () => {
