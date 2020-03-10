@@ -1,15 +1,21 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/layout/models/activity";
+import { v4 as uuid } from "uuid"; 
+import { create } from "domain";
 
 interface IProps {
   closeForm: () => void;
   activity: IActivity;
+  editActivity: (activity: IActivity) => void;
+  createActivity: (activity: IActivity) => void;
 }
 
 export const ActivityForm: React.FC<IProps> = ({
   closeForm,
-  activity: initialFormState
+  activity: initialFormState,
+  editActivity,
+  createActivity
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -35,7 +41,14 @@ export const ActivityForm: React.FC<IProps> = ({
   };
 
   const handleSubmit = () => {
-    console.log(activity);
+    if (activity.id.length === 0) {
+      let newActivity = {
+        ...activity, id: uuid()
+      };
+      createActivity(newActivity);
+    } else {
+      editActivity(activity);
+    }
   }
 
   return (

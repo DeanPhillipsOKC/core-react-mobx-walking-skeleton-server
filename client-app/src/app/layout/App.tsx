@@ -29,6 +29,18 @@ const App = () => {
     setSelectedActivity(null);
   }
 
+  const handleCreateActivity = (activity: IActivity) => {
+    setActivities([...activities, activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  }
+
+  const handleEditActivity = (activity: IActivity) => {
+    setActivities([...activities.filter(a => a.id !== activity.id), activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  }
+
   useEffect(() => {
     axios
       .get<IActivity[]>("http://localhost:5000/api/activities")
@@ -49,6 +61,8 @@ const App = () => {
           setEditMode={setEditMode}
           closeForm={handleCloseForm}
           closeDetails={handleCloseDetails}
+          createActivity={handleCreateActivity}
+          editActivity={handleEditActivity}
         ></ActivityDashboard>
       </Container>
     </Fragment>
