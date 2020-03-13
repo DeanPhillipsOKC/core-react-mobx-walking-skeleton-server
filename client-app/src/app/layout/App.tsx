@@ -13,6 +13,7 @@ const App = () => {
   );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.find(a => a.id === id) ?? null);
@@ -33,45 +34,68 @@ const App = () => {
   };
 
   const handleCreateActivity = (activity: IActivity) => {
-    agent.Activities.create(activity).then(() => {
-      setActivities([...activities, activity]);
-      setSelectedActivity(activity);
-      setEditMode(false);
-    });
+    setSubmitting(true);
+    agent.Activities.create(activity)
+      .then(() => {
+        setActivities([...activities, activity]);
+        setSelectedActivity(activity);
+        setEditMode(false);
+      })
+      .then(() => {
+        setSubmitting(false);
+      });
   };
 
   const handleEditActivity = (activity: IActivity) => {
-    agent.Activities.update(activity).then(() => {
-      setActivities([
-        ...activities.filter(a => a.id !== activity.id),
-        activity
-      ]);
-      setSelectedActivity(activity);
-      setEditMode(false);
-    });
+    setSubmitting(true);
+    agent.Activities.update(activity)
+      .then(() => {
+        setActivities([
+          ...activities.filter(a => a.id !== activity.id),
+          activity
+        ]);
+        setSelectedActivity(activity);
+        setEditMode(false);
+      })
+      .then(() => {
+        setSubmitting(false);
+      });
   };
 
   const handleDeleteActivity = (id: string) => {
-    agent.Activities.delete(id).then(() => {
-      setActivities([...activities.filter(a => a.id !== id)]);
-    });
+    setSubmitting(true);
+    agent.Activities.delete(id)
+      .then(() => {
+        setActivities([...activities.filter(a => a.id !== id)]);
+      })
+      .then(() => {
+        setSubmitting(false);
+      });
   };
 
   useEffect(() => {
-    agent.Activities.list().then(response => {
-      let activities: IActivity[] = [];
-      response.forEach(a => {
-        a.date = a.date.split(".")[0];
-        activities.push(a);
-      });
+    agent.Activities.list()
+      .then(response => {
+        let activities: IActivity[] = [];
+        response.forEach(a => {
+          a.date = a.date.split(".")[0];
+          activities.push(a);
+        });
 
-      setActivities(activities);
-    }).then(() => {
-      setLoading(false);
-    });
+        setActivities(activities);
+      })
+      .then(() => {
+        setLoading(false);
+      });
   }, []);
 
-  if (loading) return <LoadingComponent content='Loading activities...' inverted={true}></LoadingComponent>
+  if (loading)
+    return (
+      <LoadingComponent
+        content="Loading activities..."
+        inverted={true}
+      ></LoadingComponent>
+    );
 
   return (
     <Fragment>
@@ -88,6 +112,7 @@ const App = () => {
           createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
           deleteActivity={handleDeleteActivity}
+          submitting={submitting}
         ></ActivityDashboard>
       </Container>
     </Fragment>

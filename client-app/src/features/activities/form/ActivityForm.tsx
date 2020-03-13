@@ -1,20 +1,22 @@
 import React, { useState, FormEvent } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/layout/models/activity";
-import { v4 as uuid } from "uuid"; 
+import { v4 as uuid } from "uuid";
 
 interface IProps {
   closeForm: () => void;
   activity: IActivity;
   editActivity: (activity: IActivity) => void;
   createActivity: (activity: IActivity) => void;
+  submitting: boolean;
 }
 
 export const ActivityForm: React.FC<IProps> = ({
   closeForm,
   activity: initialFormState,
   editActivity,
-  createActivity
+  createActivity,
+  submitting
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -34,7 +36,9 @@ export const ActivityForm: React.FC<IProps> = ({
 
   const [activity, setActivity] = useState<IActivity>(initializeForm);
 
-  const handleInputChange = (event: FormEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.currentTarget;
     setActivity({ ...activity, [name]: value });
   };
@@ -42,13 +46,14 @@ export const ActivityForm: React.FC<IProps> = ({
   const handleSubmit = () => {
     if (activity.id.length === 0) {
       let newActivity = {
-        ...activity, id: uuid()
+        ...activity,
+        id: uuid()
       };
       createActivity(newActivity);
     } else {
       editActivity(activity);
     }
-  }
+  };
 
   return (
     <Segment clearing>
@@ -61,7 +66,7 @@ export const ActivityForm: React.FC<IProps> = ({
         ></Form.Input>
         <Form.TextArea
           placeholder="Description"
-          name='description'
+          name="description"
           onChange={handleInputChange}
           value={activity.description}
           rows={2}
@@ -91,6 +96,7 @@ export const ActivityForm: React.FC<IProps> = ({
           value={activity.venue}
         ></Form.Input>
         <Button
+          loading={submitting}
           floated="right"
           positive
           type="submit"
